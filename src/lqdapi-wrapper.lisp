@@ -7,7 +7,7 @@
 	:cl-json-web-tokens
 	:yason)
   (:shadow :with-array :with-object)
-  (:export :get-products :get-product :get-fiat-accounts :create-order))
+  (:export :get-products :get-product :get-fiat-accounts :create-order :get-order-book))
 (in-package :lqdapi-wrapper)
 
 (defparameter *endpoint-url*     "https://api.liquid.com")
@@ -98,4 +98,8 @@
 
 (defun get-product (id)
   (let* ((path  (concatenate 'string "/products/" id)))
+    (get-public-api path)))
+
+(defun get-order-book (id)
+  (let* ((path  (concatenate 'string "/products/" id "/price_levels")))
     (get-public-api path)))
