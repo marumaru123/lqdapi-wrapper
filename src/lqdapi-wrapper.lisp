@@ -7,7 +7,7 @@
 	:cl-json-web-tokens
 	:yason)
   (:shadow :with-array :with-object)
-  (:export :get-products :get-product :get-fiat-accounts :create-order :get-order-book :get-an-order))
+  (:export :get-products :get-product :get-fiat-accounts :create-order :get-order-book :get-an-order :get-orders))
 (in-package :lqdapi-wrapper)
 
 (defparameter *endpoint-url*     "https://api.liquid.com")
@@ -15,7 +15,7 @@
 
 (defun get-timestamp ()
   (multiple-value-bind (time1 ms1) (sb-unix::system-real-time-values)
-    (parse-integer (concatenate 'string (princ-to-string time1) (princ-to-string ms1)))))
+    (parse-integer (format nil "~13,,,'0a" (concatenate 'string (princ-to-string time1) (princ-to-string ms1))))))
 
 (defun create-extra-headers (sign)
   (list (cons "X-Quoine-API-Version" "2")
@@ -80,6 +80,10 @@
 ;ok
 (defun get-fiat-accounts (token-id secret)
   (let* ((path     "/fiat_accounts"))
+    (get-private-api token-id secret path)))
+
+(defun get-orders (token-id secret)
+  (let* ((path     "/orders"))
     (get-private-api token-id secret path)))
 
 (defun get-an-order (token-id secret order-id)
