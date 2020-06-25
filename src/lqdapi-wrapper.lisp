@@ -7,7 +7,7 @@
 	:cl-json-web-tokens
 	:yason)
   (:shadow :with-array :with-object)
-  (:export :get-products :get-product :get-fiat-accounts :create-order :get-order-book :get-an-order :get-orders))
+  (:export :get-products :get-product :get-fiat-accounts :create-order :get-order-book :get-an-order :get-orders :get-an-account-details))
 (in-package :lqdapi-wrapper)
 
 (defparameter *endpoint-url*     "https://api.liquid.com")
@@ -81,6 +81,10 @@
 (defun get-fiat-accounts (token-id secret)
   (let* ((path     "/fiat_accounts"))
     (get-private-api token-id secret path)))
+
+(defun get-an-account-details (token-id secret currency)
+  (let* ((path  (concatenate 'string "/accounts/" currency)))
+    (get-private-api token-id secret path)))  
 
 (defun get-orders (token-id secret)
   (let* ((path     "/orders"))
